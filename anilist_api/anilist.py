@@ -39,7 +39,7 @@ def repackage_data(json_data):
 
     return scores
 
-def get_users_scores(username):
+def get_users_scores_ani(username):
     json_api_response = api_get_scores(username)
     scores = repackage_data(json_api_response)
     return scores
