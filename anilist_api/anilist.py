@@ -9,7 +9,7 @@ def api_get_scores(username):
                 lists {
                     isCustomList
                     entries {
-                        id
+                        mediaId
                         score
                     }
                 }
@@ -35,7 +35,7 @@ def repackage_data(json_data):
             # Add all non-zero scores
             for entry in media_list['entries']:
                 if entry['score'] != 0:
-                    scores[entry['id']] = entry['score']
+                    scores[entry['mediaId']] = entry['score']
 
     return scores
 
