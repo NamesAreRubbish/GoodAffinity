@@ -10,6 +10,9 @@ def api_get_scores(username):
                     isCustomList
                     entries {
                         mediaId
+                        media {
+                            idMal
+                        }
                         score
                     }
                 }
@@ -26,7 +29,7 @@ def api_get_scores(username):
     return json.loads(response.content.decode('utf-8'))['data']['MediaListCollection']
 
 
-def repackage_data(json_data):
+def repackage_data(json_data, mal_compatible):
     scores = {}
 
     for media_list in json_data['lists']:
@@ -35,11 +38,14 @@ def repackage_data(json_data):
             # Add all non-zero scores
             for entry in media_list['entries']:
                 if entry['score'] != 0:
-                    scores[entry['mediaId']] = entry['score']
+                    if mal_compatible:
+                        scores[entry['media']['idMal']] = entry['score']
+                    else:
+                        scores[entry['mediaId']] = entry['score']
 
     return scores
 
-def get_users_scores_ani(username):
+def get_users_scores_ani(username, mal_compatible=False):
     json_api_response = api_get_scores(username)
-    scores = repackage_data(json_api_response)
+    scores = repackage_data(json_api_response, mal_compatible)
     return scores
